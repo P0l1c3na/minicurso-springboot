@@ -1,5 +1,7 @@
 package ifgoiano.urutai.minicurso.spring.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,7 +21,7 @@ public class Endereco {
     private Long id;
 
     @NotNull(message = "A Pessoa deve ser informada")
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     private Pessoa pessoa;
 
     @Size(max = 9, min = 9, message = "O CEP deve ter 9 caracteres no formato XXXXX-XXX")
@@ -34,7 +36,6 @@ public class Endereco {
     @Size(min = 2, max = 128, message = "O Bairro deve ter entre 2 e 128 caracteres")
     private String bairro;
 
-    @Size(max = 100000, message = "O numero deve ter o valor de até 100.000")
     private Integer numero;
 
     @NotBlank(message = "A cidade deve ser informada")

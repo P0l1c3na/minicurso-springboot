@@ -1,7 +1,12 @@
 package ifgoiano.urutai.minicurso.spring.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
@@ -28,7 +33,7 @@ public class Pessoa {
 	@Size(message = "O nome deve ter entre 2 e 64 caracteres", min = 2, max = 64)
 	private String nome;
 
-	@CPF(message = "O CPF está em formato Inválido")
+	@Size(max = 14, min = 11, message = "O CPF deve ter entre 11 e 14 digitos")
 	@NotBlank(message = "O CPF deve ser informado")
 	private String cpf;
 
@@ -47,11 +52,12 @@ public class Pessoa {
 	@NotBlank(message = "A cor deve ser informada")
 	private String cor;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "pessoa",
-			cascade = CascadeType.DETACH,
-			orphanRemoval = true,
+			cascade = CascadeType.REMOVE,
 			targetEntity = Endereco.class,
-			fetch = FetchType.EAGER)
+			fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Endereco> enderecos;
 
 	@Override

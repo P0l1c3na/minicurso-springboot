@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface EnderecoRepository extends JpaRepository<Endereco, Long> {
 
-    @Query("from Endereco e")
+    @Query("from Endereco e where e.pessoa.id = :idPessoa")
     List<Endereco> findByIdPessoa(Long idPessoa);
 
 }
